@@ -1,5 +1,5 @@
 #Giảng viên số
-#Cung cấp các chức năng: đọc dữ liệu từ file TKB của giảng viên, phân công tự động (chưa hợp lý với thực tế), hiển thị lịch dạy trong ngày
+#Cung cấp các chức năng: đọc dữ liệu từ file TKB của giảng viên, phân công tự động (chưa hợp lý với thực tế) / thủ công, hiển thị lịch dạy trong ngày
 ![image](https://github.com/DucDaddy/Giang-vien-so/assets/132624536/4f9bdac3-9b65-46c0-ae74-7343c30a1a23)
 ![image](https://github.com/DucDaddy/Giang-vien-so/assets/132624536/2068559e-ba81-4d88-a040-ab658472b65a)
 ![image](https://github.com/DucDaddy/Giang-vien-so/assets/132624536/75e991ba-649f-4d83-bc7b-293027e0a6c1)
