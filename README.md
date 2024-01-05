@@ -5,3 +5,6 @@
 ![image](https://github.com/DucDaddy/Giang-vien-so/assets/132624536/75e991ba-649f-4d83-bc7b-293027e0a6c1)
 ![image](https://github.com/DucDaddy/Giang-vien-so/assets/132624536/94cf9f3d-21ab-4fb2-b9f7-bd3d11abffad)
 ![image](https://github.com/DucDaddy/Giang-vien-so/assets/132624536/e2b8b5e5-ccfa-4eab-bb68-4ff628e02e0b)
+
+#File xls thời khóa biểu gốc
+![image](https://github.com/DucDaddy/Giang-vien-so/assets/132624536/666d4918-3cb4-4a08-8ffe-566af0b05a59)
