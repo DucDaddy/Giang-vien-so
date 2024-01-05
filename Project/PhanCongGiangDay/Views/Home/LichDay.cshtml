@@ -1,0 +1,89 @@
+﻿@model IEnumerable<PhanCongGiangDay.Models.ChiTietLichDay>
+
+@{
+    ViewData["Title"] = "LichDay";
+    Layout = "~/Views/Shared/_GiangDayLayout.cshtml";
+}
+@{
+    var context = new QlgiangDayContext();
+    var lstGiangVien = context.ThongTinGvs.ToList();
+
+
+    DateTime today = new DateTime(ThoiGian.nam, ThoiGian.thang, ThoiGian.ngay, 12, 0, 0);
+    int thu = (int)today.DayOfWeek + 1;
+    //Lấy tọa độ cho timeline: tỉ lệ độ dài dựa trên tỉ lệ về khoảng thời gian
+    double kc = -20f;
+    DateTime now = DateTime.Now;
+    
+    if (now.Hour >= 7 && now.Hour <= 12) //Buổi sáng
+    {
+        kc = 44.33f + (double)(((((double)now.Hour-7.0f)+((double)now.Minute/60.0f))/5.0f) * 2.0f * 194.0f); //194: chiều cao của 1 hàng ca... ; 44.3: chiều cao hàng tiêu đề của bảng
+    }
+    else if (now.Hour >= 13 && now.Hour <= 18) //Buổi chiều
+    {
+        kc = 44.33f + 2.0f * 194.0f + (double)(((((double)now.Hour - 13.0f) + ((double)now.Minute / 60.0f)) / 5.0f) * 2.0f * 194.0f);
+    }
+}
+
+<h1>Lịch dạy</h1>
+
+<h2>Thứ @thu Ngày @today.Day/@today.Month/@today.Year</h2>
+
+<form method="post" action="@Url.Action("LichDayTheoNgay", "Home")">
+    <label for="ngay">Chọn ngày:</label>
+    <input type="datetime-local" id="ngay" name="ngay" value="@today.ToString("yyyy-MM-ddTHH:mm")">
+    <button type="submit">Chọn</button>
+</form>
+
+<form method="post" action="@Url.Action("LichDayCaNhan", "Home")">
+    <select name="maGV">
+        <option value="null">Cả bộ môn</option>
+        @foreach (var gv in lstGiangVien)
+        {
+            <option value="@gv.MaGv">@gv.MaGv   @gv.TenDayDu</option>
+        }
+    </select>
+    <input type="hidden" name="ngay" value="@today.Day" />
+    <input type="hidden" name="thang" value="@today.Month" />
+    <input type="hidden" name="nam" value="@today.Year" />
+    <button type="submit">Chọn</button>
+</form>
+
+<div style="overflow-x: auto;">
+    <div style="position: relative;">
+        <div style="position: absolute; top: @(kc)px; left: 0; right: 0; height: 1px; background-color: green;"></div>
+        <p style="position: absolute; top: @(kc)px; left: 0; right: 0; font-weight:bold; color:red;">@now.Hour.ToString("00"):@now.Minute.ToString("00")</p>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="background-color:#e6f7ff;">Ca</th>
+                <th style="background-color:#e6f7ff;">Lịch</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ca in Enumerable.Range(1, 4))
+            {
+                <tr style="height: 194px;">
+                    <td style="width: 5%; background-color:#e6f7ff;">@ca</td>
+                    <td style="display: flex; flex-wrap: nowrap; padding-left:10px;">
+                        @foreach (var lich in Model)
+                        {
+                            @if (lich.Tiet == ca * 3 - 2 || lich.Tiet == ca * 3 || lich.Tiet == ca * 3 - 1)
+                            {
+                                <div style="border: 1px solid red; display: inline-block;">
+                                    <div style="  width: 100%; margin: 10px;">
+                                        <p style="font-size: 16px; font-weight:bold;">@lich.GiangVien</p>
+                                        <p style="font-size: 14px;">@lich.TenLopHP</p>
+                                        <p style="font-size: 14px;">@lich.Lop</p>
+                                        <p style="font-size: 14px;">@lich.DiaDiem</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

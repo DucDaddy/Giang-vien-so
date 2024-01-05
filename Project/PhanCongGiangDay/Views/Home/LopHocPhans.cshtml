@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PhanCongGiangDay.Models.LopHocPhan>
+
+@{
+    ViewData["Title"] = "LopHocPhans";
+    Layout = "_GiangDayLayout";
+}
+@{
+    var context = new QlgiangDayContext();
+}
+
+<p>@TempData["msg"]</p>
+
+<h1 class="text-center">Các lớp học phần</h1>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark sticky-top">
+            <tr>
+                <th>Tên</th>
+                <th>Học phần</th>
+                <th>Sĩ số</th>
+                <th>Số đăng ký</th>
+                <th>Giảng viên</th>
+                <th>Lớp</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.TenLopHp)</td>
+                    <td>@context.HocPhans.FirstOrDefault(x=>x.MaHocPhan == item.MaHocPhan).TenHocPhan</td>
+                    <td>@Html.DisplayFor(modelItem => item.SiSo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.SoDk)</td>
+                    <td>@context.ThongTinGvs.FirstOrDefault(x=>x.MaGv == item.MaGv).TenDayDu</td>
+                    <td>@context.Lops.FirstOrDefault(x=>x.MaLop == item.MaLop).TenLop</td>
+                    <td class="d-flex flex-wrap align-items-center">
+                        <a href="@Url.Action("Update", new { maLopHp = item.MaLopHp })" class="btn btn-primary btn-sm me-2">Chi tiết lớp</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

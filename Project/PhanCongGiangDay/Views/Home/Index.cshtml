@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_GiangDayLayout";
+}
+
+<div class="container">
+    <div class="row justify-content-center my-5">
+        <div class="col-md-6 border rounded p-3">
+            <h1 class="text-center mb-5">Nhập file Excel</h1>
+            <form method="post" enctype="multipart/form-data" action="ProcessExcel">
+                <div class="form-group">
+                    <label for="excelFile">Chọn file (xlsx)</label>
+                    <input type="file" class="form-control-file" name="excelFile" id="excelFile">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Nhập file và xử lý</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<p>@TempData["data"]</p>

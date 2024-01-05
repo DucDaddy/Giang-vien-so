@@ -1,0 +1,110 @@
+﻿@model PhanCongGiangDay.Models.LopHocPhan
+
+@{
+    Layout = "_GiangDayLayout";
+}
+@{
+    var context = new QlgiangDayContext();
+
+    var listGV = context.ThongTinGvs.ToList();
+
+    string tgdd = "";
+    var lstGiaiDoan = context.GiaiDoans.Where(x => x.MaLopHp == Model.MaLopHp).ToList();
+    foreach (var item in lstGiaiDoan)
+    {
+        var lstCTGD = context.ChiTietGiaiDoans.Where(x => x.MaGiaiDoan == item.MaGiaiDoan).ToList();
+        if (lstCTGD.Count == 0)
+        {
+            tgdd += "Từ " + item.NgayBatDau.ToString() + " đến " + item.NgayKetThuc.ToString() + ":<br />";
+        }
+        else
+        {
+            foreach (var item2 in lstCTGD)
+            {
+                tgdd += "Từ " + item.NgayBatDau.ToString() + " đến " + item.NgayKetThuc.ToString() + ":<br />" +
+                   "Thứ " + item2.Thu.ToString() + " tiết " + item2.Tiet.ToString() + "," + (item2.Tiet + 1).ToString() + "," + (item2.Tiet + 2).ToString() + " tại " + item2.MaPhong + "<br />";
+            }
+        }
+    }
+}
+
+<div class="container">
+
+    <h4 class="mt-5">Chi tiết lớp học phần</h4>
+
+    <hr />
+    @using (Html.BeginForm("PhanCong", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MaLopHp, "Mã lớp HP: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @Html.DisplayFor(model => model.MaLopHp)
+                @Html.HiddenFor(model => model.MaLopHp)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MaHocPhanNavigation.TenHocPhan, "Học phần: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @context.HocPhans.FirstOrDefault(x=>x.MaHocPhan == Model.MaHocPhan).TenHocPhan
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.TenLopHp, "Tên lớp HP: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @Html.DisplayFor(model => model.TenLopHp)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.TenLopHp, "Thời gian, địa điểm: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @Html.Raw(tgdd)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.SiSo, "Sĩ số: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @Html.DisplayFor(model => model.SiSo)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.SoDk, "Số đăng ký: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @Html.DisplayFor(model => model.SoDk)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MaLopNavigation.TenLop, "Lớp: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @context.Lops.FirstOrDefault(x=>x.MaLop == Model.MaLop).TenLop
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MaGv, "Giảng viên: ", htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+            <div class="col-sm-9">
+                @Html.DropDownListFor(model => model.MaGv, new SelectList(listGV, "MaGv", "TenDayDu"), "-- Chọn giảng viên --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MaGv, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+                <input type="submit" value="Phân công" class="btn btn-primary" />
+            </div>
+        </div>
+
+    }
+
+    <div class="mt-3">
+        <a asp-action="LopHocPhans" class="btn btn-secondary">Quay lại</a>
+    </div>
+
+</div>
